@@ -1,5 +1,5 @@
 FROM alpine:latest
 
-ARG TOOLS
+ARG TOOLS # comma separated
 
-RUN apk add "${TOOLS//,/ }"
+RUN apk add $(echo $TOOLS | tr ',' ' ')
