@@ -1,0 +1,25 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Build Docker image
+      run: docker build --build-arg TOOLS=$(cat tools | xargs) -t dyn-docker-image .
+    
+    - name: Verify Docker image
+      run: |
+        docker run -td --name dyn-docker-container dyn-docker-image
+        for tool in $(cat tools); do
+          docker exec -i dyn-docker-container which $tools
+        done
