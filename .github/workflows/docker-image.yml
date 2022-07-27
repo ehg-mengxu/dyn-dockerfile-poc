@@ -15,7 +15,7 @@ jobs:
     - uses: actions/checkout@v3
     
     - name: Build Docker image
-      run: docker build --build-arg TOOLS=$(cat tools | xargs) -t dyn-docker-image .
+      run: docker build --build-arg TOOLS=$(cat tools | xargs | tr ' ' ',') -t dyn-docker-image .
     
     - name: Verify Docker image
       run: |
